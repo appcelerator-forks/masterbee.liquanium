@@ -1,0 +1,18 @@
+<Alloy>
+	<View id="canvas">
+		<View id="pull" top="0" width="Ti.UI.FILL" height="Ti.UI.SIZE" zIndex="1">
+			<ActivityIndicator id="pullindicator" visible="true"  />
+		</View>
+		<ScrollView width="Ti.UI.FILL" height="Ti.UI.FILL" zIndex="5" verticalBounce="true" layout="vertical">
+			<View top="0" class="container" width="Ti.UI.FILL" height="Ti.UI.SIZE" />
+			<View top="0" class="filler" width="Ti.UI.FILL" height="Ti.UI.FILL" />
+		</ScrollView>
+		<ScrollView width="Ti.UI.FILL" height="Ti.UI.FILL" zIndex="4" verticalBounce="true" layout="vertical">
+			<View top="0" class="container" width="Ti.UI.FILL" height="Ti.UI.SIZE" />
+			<View top="0" class="filler" width="Ti.UI.FILL" height="Ti.UI.FILL" />
+		</ScrollView>
+		<View id="push" bottom="0" width="Ti.UI.FILL" height="Ti.UI.SIZE" zIndex="1">
+			<ActivityIndicator id="pushindicator" visible="true" />
+		</View>
+	</View>
+</Alloy>

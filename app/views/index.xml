@@ -1,5 +1,6 @@
 <Alloy>
-	<Window class="container">
-		<Label id="label" onClick="doClick">Hello, World</Label>
+	<Window class="container" id="win" layout="vertical">
+		<Label id="label" onClick="doClick" top="30dp">Hello, World</Label>
+		<Widget src="info.liquanium.InfiniteScroll" id="scroll" width="Ti.UI.FILL" height="300dp" top="20dp"/>
 	</Window>
 </Alloy>

@@ -1,6 +1,14 @@
 <Alloy>
 	<Window class="container" id="win" layout="vertical">
 		<Label id="label" onClick="doClick" top="30dp">Hello, World</Label>
-		<Widget src="info.liquanium.InfiniteScroll" id="scroll" width="Ti.UI.FILL" height="300dp" top="20dp"/>
+		<Widget src="info.liquanium.listview" id="scroll" width="Ti.UI.FILL" height="300dp" top="20dp">
+
+			<ItemTemplate name="view1" id="me">
+				<View height="40" bindId="bgcolor">
+					<Label>I am view 1 template</Label>
+				</View>
+			</ItemTemplate>
+
+		</Widget>
 	</Window>
 </Alloy>

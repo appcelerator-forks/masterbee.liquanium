@@ -5,34 +5,40 @@ function WPATH(s) {
 }
 
 function Controller() {
+    function _getTrueHeight(e) {
+        var _element = e.source, parentNode = _element.getParent();
+        _element.removeEventListener("postlayout", _getTrueHeight);
+        parentNode._queue -= 1;
+        Ti.API.debug(parentNode._queue);
+        parentNode._contentHeight += e.source.size.height;
+        parentNode.fireEvent("changed", {});
+    }
+    function _changed(e) {
+        var node = e.source;
+        if (1 > node._queue) {
+            node.fireEvent("completed", {});
+            node._queue = 0;
+        }
+    }
+    function _completed(e) {
+        var node = e.source;
+        node.removeEventListener("completed", _completed);
+        Ti.API.debug("===============================");
+        Ti.API.debug(" HIDDEN HEIGHT " + hidden._contentHeight);
+        Ti.API.debug(" VISIBLE HEIGHT " + visible._contentHeight);
+        Ti.API.debug("===============================");
+        hidden._contentHeight - visible._contentHeight;
+    }
     function _sanitize(views) {
         return _.isArray(views) ? views : [ views ];
     }
-    function _switchScrolls() {
-        $.canvas.children[visiblescroll].zIndex = 4;
-        $.canvas.children[hiddenscroll].zIndex = 5;
-        _resetCanvas();
-    }
-    function _resetCanvas() {
-        var visible = visiblescroll;
-        visiblescroll = hiddenscroll;
-        hiddenscroll = visible;
-        var back = $.canvas.children[hiddenscroll];
-        back.setContentOffset({
-            x: 0,
-            y: 0
-        }, {
-            animate: false
-        });
-        if (back.children[0].children && back.children[0].children.length > 0) {
-            var children = back.children[0].children.slice(0);
-            var numChildren = children.length;
-            for (i = 0; numChildren > i; i++) back.children[0].remove(children[i]);
-        }
-    }
     function addToScroll(views) {
-        var _views = _sanitize(views);
-        for (var i = 0, j = _views.length; j > i; i++) $.canvas.children[visiblescroll].children[0].add(_views[i]);
+        var _views = _sanitize(views), _viewport = $.canvas.children[visiblescroll];
+        visible._queue = _views.length;
+        for (var i = 0, j = _views.length; j > i; i++) {
+            _views[i].addEventListener("postlayout", _getTrueHeight);
+            _viewport.add(_views[i]);
+        }
         return true;
     }
     function add(views) {
@@ -42,14 +48,16 @@ function Controller() {
         addToScroll(views);
     }
     function prepend(views) {
-        1 > $.canvas.children[visiblescroll].children[0].children && addToScroll(views);
+        1 > visible.getChildren().length && addToScroll(views);
         views = _sanitize(views);
-        var workerscroller = $.canvas.children[hiddenscroll].children[0], _arrayofviews = $.canvas.children[visiblescroll].children[0].children.slice(0), _complete = views.concat(_arrayofviews);
+        var _arrayofviews = visible.getChildren(), _complete = views.concat(_arrayofviews);
+        hidden._queue = _complete.length;
         for (var i = 0, j = _complete.length; j > i; i++) {
             Ti.API.debug("adding > " + _complete[i].apiName);
-            workerscroller.add(_complete[i]);
+            _complete[i].addEventListener("postlayout", _getTrueHeight);
+            hidden.add(_complete[i]);
         }
-        _switchScrolls();
+        hidden.addEventListener("completed", _completed);
         return true;
     }
     new (require("alloy/widget"))("info.liquanium.InfiniteScroll");
@@ -78,52 +86,24 @@ function Controller() {
         visible: "true"
     });
     $.__views.pull.add($.__views.pullindicator);
-    $.__views.__alloyId0 = Ti.UI.createScrollView({
+    $.__views.__alloyId0 = Ti.UI.createListView({
         width: Ti.UI.FILL,
         height: Ti.UI.FILL,
         zIndex: "5",
-        verticalBounce: "true",
+        seperatorColor: "transparent",
         layout: "vertical",
         id: "__alloyId0"
     });
     $.__views.canvas.add($.__views.__alloyId0);
-    $.__views.__alloyId1 = Ti.UI.createView({
-        top: "0",
-        width: Ti.UI.FILL,
-        height: Ti.UI.SIZE,
-        id: "__alloyId1"
-    });
-    $.__views.__alloyId0.add($.__views.__alloyId1);
-    $.__views.__alloyId2 = Ti.UI.createView({
-        top: "0",
-        width: Ti.UI.FILL,
-        height: Ti.UI.FILL,
-        id: "__alloyId2"
-    });
-    $.__views.__alloyId0.add($.__views.__alloyId2);
-    $.__views.__alloyId3 = Ti.UI.createScrollView({
+    $.__views.__alloyId1 = Ti.UI.createListView({
         width: Ti.UI.FILL,
         height: Ti.UI.FILL,
         zIndex: "4",
-        verticalBounce: "true",
+        seperatorColor: "transparent",
         layout: "vertical",
-        id: "__alloyId3"
+        id: "__alloyId1"
     });
-    $.__views.canvas.add($.__views.__alloyId3);
-    $.__views.__alloyId4 = Ti.UI.createView({
-        top: "0",
-        width: Ti.UI.FILL,
-        height: Ti.UI.SIZE,
-        id: "__alloyId4"
-    });
-    $.__views.__alloyId3.add($.__views.__alloyId4);
-    $.__views.__alloyId5 = Ti.UI.createView({
-        top: "0",
-        width: Ti.UI.FILL,
-        height: Ti.UI.FILL,
-        id: "__alloyId5"
-    });
-    $.__views.__alloyId3.add($.__views.__alloyId5);
+    $.__views.canvas.add($.__views.__alloyId1);
     $.__views.push = Ti.UI.createView({
         id: "push",
         bottom: "0",
@@ -139,17 +119,21 @@ function Controller() {
     $.__views.push.add($.__views.pushindicator);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    var args = arguments[0] || {}, IS_IOS = false, hiddenscroll = 2, visiblescroll = 1;
+    var visible, hidden, args = arguments[0] || {}, IS_IOS = false, hiddenscroll = 2, visiblescroll = 1;
     delete args.id;
-    $.canvas.children[visiblescroll].children[0].layout = $.canvas.children[hiddenscroll].children[0].layout = "vertical";
-    $.canvas.children[visiblescroll].children[1].backgroundColor = $.canvas.children[hiddenscroll].children[1].backgroundColor = $.canvas.children[visiblescroll].children[0].backgroundColor = $.canvas.children[hiddenscroll].children[0].backgroundColor = args.backgroundColor ? args.backgroundColor : "#fff";
-    $.canvas.applyProperties(args);
-    $.pullindicator.style = $.pushindicator.style = IS_IOS ? Ti.UI.iPhone.ActivityIndicatorStyle.DARK : Ti.UI.ActivityIndicatorStyle.DARK;
+    (function(args, $) {
+        visible = $.canvas.children[visiblescroll], hidden = $.canvas.children[hiddenscroll];
+        visible._contentHeight = hidden._contentHeight = 0;
+        visible.addEventListener("changed", _changed);
+        hidden.addEventListener("changed", _changed);
+        $.pullindicator.style = $.pushindicator.style = IS_IOS ? Ti.UI.iPhone.ActivityIndicatorStyle.DARK : Ti.UI.ActivityIndicatorStyle.DARK;
+        $.canvas.applyProperties(args);
+        $.pullindicator.show();
+        $.pushindicator.show();
+    })(args, $);
     exports.add = add;
     exports.prepend = prepend;
     exports.append = append;
-    $.pullindicator.show();
-    $.pushindicator.show();
     _.extend($, exports);
 }
 

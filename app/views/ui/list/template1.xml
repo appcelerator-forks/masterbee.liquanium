@@ -1,0 +1,6 @@
+<Alloy>
+	<View class="container" layout="vertical"  height="140dp">
+		<Label id="label">Template 1</Label>
+		<ImageView id="check" module="liquanium" scaletofit="true" height="100dp" width="Ti.UI.FILL" />
+	</View>
+</Alloy>

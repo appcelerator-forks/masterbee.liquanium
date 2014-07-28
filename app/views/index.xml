@@ -1,14 +1,9 @@
 <Alloy>
 	<Window class="container" id="win" layout="vertical">
 		<Label id="label" onClick="doClick" top="30dp">Hello, World</Label>
-		<Widget src="info.liquanium.listview" id="scroll" width="Ti.UI.FILL" height="300dp" top="20dp">
-
-			<ItemTemplate name="view1" id="me">
-				<View height="40" bindId="bgcolor">
-					<Label>I am view 1 template</Label>
-				</View>
-			</ItemTemplate>
-
+		
+		<Widget src="info.liquanium.viewlist" id="mylist">
+			<ViewTemplate module="liquanium" name="template1" controller="ui/list/template1" />
 		</Widget>
 	</Window>
 </Alloy>

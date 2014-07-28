@@ -4,19 +4,28 @@ function WPATH(s) {
     return true && 0 !== path.indexOf("/") ? "/" + path : path;
 }
 
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
-    function append(props) {
-        var section = Ti.UI.createListSection();
-        section.add(props);
-        $.list.appendSection(section);
+    function append() {
+        Ti.UI.createListSection();
     }
     new (require("alloy/widget"))("info.liquanium.listview");
     this.__widgetId = "info.liquanium.listview";
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "widget";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        __processArg(arguments[0], "__parentSymbol");
+        __processArg(arguments[0], "$model");
+        __processArg(arguments[0], "__itemTemplate");
+    }
     var $ = this;
     var exports = {};
     $.__views.canvas = Ti.UI.createView({
@@ -63,11 +72,12 @@ function Controller() {
     (function(args, $) {
         delete args.id;
         $.canvas.applyProperties(args);
-        $.list.templates = templates;
+        Ti.API.debug(JSON.stringify(templates));
         _.each([ $.pullindicator, $.pushindicator ], function(obj) {
             obj.style = activityType;
             obj.show();
         });
+        Ti.API.debug(JSON.stringify($.list));
         IS_IOS ? $.list.applyProperties({
             seperatorStyle: Ti.UI.iPhone.ListViewSeparatorStyle.NONE,
             separatorInsets: {

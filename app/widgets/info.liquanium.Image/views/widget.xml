@@ -1,6 +1,0 @@
-<Alloy>
-	<View>
-		<ActivityIndicator id="activityIndicator" message="Loading..." zIndex=""/>
-		<ImageView id="imageView" zIndex="2" />
-	</View>
-</Alloy>

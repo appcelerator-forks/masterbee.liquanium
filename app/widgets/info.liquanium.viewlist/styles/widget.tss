@@ -1,0 +1,5 @@
+"Table": {
+	backgroundColor: 'transparent',
+	height: Ti.UI.FILL,
+	width: Ti.UI.FILL
+}

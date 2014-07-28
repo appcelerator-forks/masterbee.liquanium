@@ -8,8 +8,6 @@
     "os:ios": {},
     "os:mobileweb": {},
     "dependencies": {
-        "info.liquanium.Image": "1.0",
-        "info.liquanium.InfiniteScroll": "1.0",
-        "info.liquanium.listview": "1.0"
+        "info.liquanium.viewlist": "1.0"
     }
 }

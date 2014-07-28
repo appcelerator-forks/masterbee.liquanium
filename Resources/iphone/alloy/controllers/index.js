@@ -1,12 +1,23 @@
+function __processArg(obj, key) {
+    var arg = null;
+    if (obj) {
+        arg = obj[key] || null;
+        delete obj[key];
+    }
+    return arg;
+}
+
 function Controller() {
     function doClick() {
         alert($.label.text);
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     this.__controllerPath = "index";
-    arguments[0] ? arguments[0]["__parentSymbol"] : null;
-    arguments[0] ? arguments[0]["$model"] : null;
-    var __itemTemplate = arguments[0] ? arguments[0]["__itemTemplate"] : null;
+    if (arguments[0]) {
+        __processArg(arguments[0], "__parentSymbol");
+        __processArg(arguments[0], "$model");
+        __processArg(arguments[0], "__itemTemplate");
+    }
     var $ = this;
     var exports = {};
     var __defers = {};
@@ -26,53 +37,25 @@ function Controller() {
     });
     $.__views.win.add($.__views.label);
     doClick ? $.__views.label.addEventListener("click", doClick) : __defers["$.__views.label!click!doClick"] = true;
-    var __alloyId2 = [];
-    var __alloyId4 = {
-        type: "Ti.UI.View",
-        bindId: "bgcolor",
-        childTemplates: function() {
-            var __alloyId5 = [];
-            var __alloyId7 = {
-                type: "Ti.UI.Label",
-                properties: {
-                    width: Ti.UI.SIZE,
-                    height: Ti.UI.SIZE,
-                    color: "#000",
-                    text: "I am view 1 template"
-                }
-            };
-            __alloyId5.push(__alloyId7);
-            return __alloyId5;
-        }(),
-        properties: {
-            height: "40",
-            bindId: "bgcolor"
-        }
-    };
-    __alloyId2.push(__alloyId4);
-    $.__views.me = {
-        properties: {
-            name: "view1",
-            id: "me"
-        },
-        childTemplates: __alloyId2
-    };
-    __itemTemplate["view1"] = $.__views.me;
-    $.__views.scroll = Alloy.createWidget("info.liquanium.listview", "widget", {
-        id: "scroll",
-        width: Ti.UI.FILL,
-        height: "300dp",
-        top: "20dp",
-        children: [],
+    $.__views.__alloyId0 = require("liquanium").createViewTemplate({
+        name: "template1",
+        controller: "ui/list/template1",
+        id: "__alloyId0"
+    });
+    $.__views.mylist = Alloy.createWidget("info.liquanium.viewlist", "widget", {
+        id: "mylist",
+        children: [ $.__views.__alloyId0 ],
         __parentSymbol: $.__views.win
     });
-    $.__views.scroll.setParent($.__views.win);
+    $.__views.mylist.setParent($.__views.win);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    require("liquanium");
     $.win.open();
-    $.scroll.append({
-        bgcolor: "pink",
-        template: "view1"
+    for (var i = 0, j = 10; j > i; i++) $.mylist.addView({
+        template: "template1",
+        label: "Ok I AM NUMBER " + i,
+        image: "http://www.zastavki.com/pictures/originals/2013/Girls___Beautyful_Girls___Nice_eyes_041272_.jpg"
     });
     __defers["$.__views.label!click!doClick"] && $.__views.label.addEventListener("click", doClick);
     _.extend($, exports);

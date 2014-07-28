@@ -39,6 +39,7 @@
         </plist>
     </ios>
     <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <property name="ti.android.fastdev" type="bool">true</property>
     <mobileweb>
         <precache/>
         <splash>
@@ -56,7 +57,7 @@
         <target device="mobileweb">false</target>
         <target device="tizen">false</target>
     </deployment-targets>
-    <sdk-version>3.2.3.GA</sdk-version>
+    <sdk-version>3.3.0.GA</sdk-version>
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
     </plugins>

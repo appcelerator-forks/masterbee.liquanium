@@ -1,0 +1,13 @@
+{
+	"id": "info.liquanium.viewlist",
+	"name": "info.liquanium.viewlist",
+	"description" : "A handy wrapper for a tableview that tries to take into consideration all the performances needed to make the table experience smooth",
+	"author": "Mario Bonito",
+	"version": "1.0",
+	"copyright":"Copyright (c) 2014",
+	"license":"Public Domain",
+	"min-alloy-version": "1.0",
+	"min-titanium-version":"3.3",
+	"tags":"",
+	"platforms":"android,blackberry,ios,mobileweb"
+}

@@ -4,26 +4,6 @@ function doClick(e) {
 
 var CachedImage = require('liquanium');
 
-//var new1 = Ti.UI.createView({
-//	width: Ti.UI.FILL,
-//	height: 30,
-//	backgroundColor: "red"
-//});
-
-//var new2 = Ti.UI.createView({
-//	width: Ti.UI.FILL,
-//	height: 30,
-//	backgroundColor: "blue"
-//});
-
-
-
-
-//$.scroll.add( new1 );
-
-//setTimeout( function(w){ $.scroll.add( new2 ); }, 5000);
-
-//setTimeout( function(w){ $.scroll.prepend( new3 ); }, 10000);
 
 $.win.open();
 /*
@@ -56,7 +36,7 @@ for(var i=0,j=10; i<j; i++){
   $.mylist.addView({
 	template: 'template1',
 	label: "Ok I AM NUMBER " + i,
-	image: "http://www.zastavki.com/pictures/originals/2013/Girls___Beautyful_Girls___Nice_eyes_041272_.jpg"
+	image: "http://static.panoramio.com/photos/large/79661170.jpg"
 	});
 };
 

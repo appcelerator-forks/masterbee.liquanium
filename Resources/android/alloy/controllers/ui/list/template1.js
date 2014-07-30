@@ -19,6 +19,7 @@ function Controller() {
     var exports = {};
     $.__views.template1 = Ti.UI.createView({
         layout: "vertical",
+        height: "140dp",
         id: "template1"
     });
     $.__views.template1 && $.addTopLevelView($.__views.template1);

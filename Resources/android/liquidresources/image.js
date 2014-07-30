@@ -16,16 +16,8 @@ function hideActivity(view) {
     view.children.length > 1 && view.children[0].hide();
 }
 
-function bindImage(view, local) {
-    var args = view._liquaniumImage, depth = view.children.length - 1, localResource = args.scaletofit ? resizeImage(args.image, args.height, args.width) : getTargetFile(args.image, local);
-    localResource.exists() || (localResource = copyImage(args.image));
-    Ti.API.error(localResource);
-    view.children[depth].image = localResource.nativePath;
-    animation.popIn(view);
-}
-
-function bindLocalImage(view) {
-    var args = view._liquaniumImage, depth = view.children.length - 1, localResource = copyImage(args.image);
+function bindImage(view) {
+    var args = view._liquaniumImage, depth = view.children.length - 1, localResource = args.scaletofit ? resizeImage(args.image, args.height, args.width) : getTargetFile(args.image);
     view.children[depth].image = localResource.nativePath;
     animation.popIn(view);
 }
@@ -36,17 +28,7 @@ function getScaledFile(originalPath, height, width) {
 }
 
 function getTargetFile(originalPath) {
-    var extension = getExtension(originalPath), shaDigest = Ti.Utils.md5HexDigest(originalPath), targetFilename = shaDigest + "." + extension;
-    targetFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, targetFilename);
-    return targetFile;
-}
-
-function copyImage(originalPath) {
-    var targetFile = getTargetFile(originalPath);
-    if (targetFile.exists()) return targetFile;
-    var originalFile = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, originalPath);
-    var originalBlob = originalFile.read();
-    targetFile.write(originalBlob);
+    var extension = getExtension(originalPath), shaDigest = Ti.Utils.md5HexDigest(originalPath), targetFilename = shaDigest + "." + extension, targetFile = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, targetFilename);
     return targetFile;
 }
 
@@ -112,10 +94,10 @@ function cacheFile(view) {
         }, {
             contentType: "image/*"
         });
-    } else bindLocalImage(view);
+    } else bindImage(view);
 }
 
-var ACTIVITYCOLOR = Ti.UI.iPhone.ActivityIndicatorStyle.DARK;
+var ACTIVITYCOLOR = Ti.UI.ActivityIndicatorStyle.DARK;
 
 var XHR = require("liquidresources/httpclient");
 

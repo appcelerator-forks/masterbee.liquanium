@@ -1,6 +1,19 @@
 <Alloy>
-	<View class="container" layout="vertical"  height="140dp">
-		<Label id="label">Template 1</Label>
-		<ImageView id="check" module="liquanium" scaletofit="true" height="100dp" width="Ti.UI.FILL" />
+	<View class="container" layout="vertical" height="260dp">
+		<View height="60dp">
+			<ImageView id="myphoto" left="0" module="liquanium" scaletofit="true" image="http://cdn2.business2community.com/wp-content/uploads/2013/01/Starbucks_Corporation_Logo_2011.svg_.png" height="50dp" width="50dp" />
+			<Label color="#000" text="Starbuck" left="60dp" />
+		</View>
+		<ImageView id="picture" id="check" module="liquanium" scaletofit="true" height="100dp" width="Ti.UI.FILL" />
+		<View height="100dp" backgroundColor="grey">
+			<MaskedImageView id="beacon" module="liquanium" scaletofit="true" height="50dp" width="50dp" 
+				backgroundImage="http://www.hdwallpapers11.com/wallpapers/2880x1800/nice-flower-2880x1800.jpg"
+				backgroundHeight = '28dp'
+				backgroundWidth = '28dp'
+				backgroundTop = '4dp'
+				backgroundLeft = '11dp'
+				backgroundBorderRadius ='10'
+				foregroundImage="/images/location-beacon.png" />
+		</View>
 	</View>
 </Alloy>

@@ -55,7 +55,7 @@ function Controller() {
     for (var i = 0, j = 10; j > i; i++) $.mylist.addView({
         template: "template1",
         label: "Ok I AM NUMBER " + i,
-        image: "http://www.zastavki.com/pictures/originals/2013/Girls___Beautyful_Girls___Nice_eyes_041272_.jpg"
+        image: "http://static.panoramio.com/photos/large/79661170.jpg"
     });
     __defers["$.__views.label!click!doClick"] && $.__views.label.addEventListener("click", doClick);
     _.extend($, exports);
